@@ -7,12 +7,10 @@ def hello():
 
 
 def hello1():
+    """demo function."""
     print("hello1")
 
 
 def yellow():
-    print()
-
-
-if __name__ == "__main__":
-    hello()
+    """demo function."""
+    print("yellow")
