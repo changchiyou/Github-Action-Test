@@ -75,7 +75,7 @@ jobs:
             ${{ env.pythonLocation }}
             !${{ env.pythonLocation }}/**/site-packages/${{ steps.get-package-name.outputs.PACKAGE_NAME }}*/
           key: ${{ env.pythonLocation }}-${{ hashFiles('./python-package/setup.py') }}
-      - run: pip install -e './python-package[test]'
+      - run: pip install -e './[test]'
       - name: Run Pylint
         id: run-pylint
         run: |
