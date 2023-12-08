@@ -27,7 +27,7 @@ jobs:
       - name: Get package name
         id: get-package-name
         run: |
-          echo "PACKAGE_NAME=$(grep 'name' ./python-package/setup.py | sed -E 's/.*name\s*=\s*["'"'"']([^"'"'"']+)["'"'"'].*/\1/')" >> $GITHUB_OUTPUT
+          echo "PACKAGE_NAME=$(grep 'name' ./setup.py | sed -E 's/.*name\s*=\s*["'"'"']([^"'"'"']+)["'"'"'].*/\1/')" >> $GITHUB_OUTPUT
       - name: Get commit hash
         id: get-commit-hash
         run: |
@@ -74,12 +74,12 @@ jobs:
             **/__pycache__/
             ${{ env.pythonLocation }}
             !${{ env.pythonLocation }}/**/site-packages/${{ steps.get-package-name.outputs.PACKAGE_NAME }}*/
-          key: ${{ env.pythonLocation }}-${{ hashFiles('./python-package/setup.py') }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('./setup.py') }}
       - run: pip install -e './[test]'
       - name: Run Pylint
         id: run-pylint
         run: |
-          pylint python-package/ --rcfile=./.pylintrc | tee pylint.txt
+          pylint ptest/ --rcfile=./.pylintrc | tee pylint.txt
           echo "EXIT_CODE=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
         continue-on-error: true
       - name: Update commit status - Pylint
@@ -141,7 +141,7 @@ jobs:
       - name: Run Pytest
         id: run-pytest
         run: |
-          pytest --cov=./python-package tests/ --cov-report=xml -m "not webtest" -c pytest.ini | tee pytest.txt
+          pytest --cov=./ptest tests/ --cov-report=xml -m "not webtest" -c pytest.ini | tee pytest.txt
           echo "EXIT_CODE=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
         continue-on-error: true
       - name: Update commit status - Pytest
